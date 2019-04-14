@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <input type="text" id="msg"><input type="button" value="发送" id="send">
+</div>
+<ul id="chatContent"></ul>
+<script>
+    var msg = document.querySelector('#msg');
+    var send = document.querySelector('#send');
+    var chatContent = document.querySelector('#chatContent');
+
+    var ws = new WebSocket('ws://localhost:8080/chat');
+    ws.onopen = function () {
+        ws.send('<li>xxx加入了聊天</li>');
+    }
+
+    ws.onmessage = function (msg) {
+        chatContent.innerHTML = chatContent.innerHTML + msg.data;
+    }
+
+    send.onclick = function () {
+        ws.send('<li>' + msg.value + '</li>');
+    }
+</script>
+</body>
+</html>
